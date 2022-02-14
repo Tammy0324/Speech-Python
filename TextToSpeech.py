@@ -6,18 +6,37 @@ speech_config = speechsdk.SpeechConfig(subscription="b751009eb5f545f8a4d0ce3cab8
 
 speech_config.speech_synthesis_language = "en-US"
 
-r=requests.get("https://www.eslfast.com/kidsenglish/ke/ke001.htm")
-soup=BeautifulSoup(r.text, "html.parser")
-sel=soup.select('div p.read_text font')
+from urllib.parse import urlparse
+import requests
+from bs4 import BeautifulSoup 
 
-string = ""
+url = "https://www.eslfast.com/kidsenglish/ke/ke00{}.htm"
+for t in range(1,6):
+  #print(url.format(t))
+  r=requests.get(url.format(t))
+  soup=BeautifulSoup(r.text, "html.parser")
+  sel=soup.select('div p.read_text font')
+  #type(sel)
+  string = ""
+  for s in sel:
+    string = s.text
+  print(s.text)
+  audio_config = speechsdk.audio.AudioOutputConfig(use_default_speaker=True)
+  synthesizer = speechsdk.SpeechSynthesizer(speech_config=speech_config, audio_config=audio_config)
+  synthesizer.speak_text_async(string)
 
-for s in sel:
-  string = s.text
+# r=requests.get("https://www.eslfast.com/kidsenglish/ke/ke001.htm")
+# soup=BeautifulSoup(r.text, "html.parser")
+# sel=soup.select('div p.read_text font')
+
+# string = ""
+
+# for s in sel:
+#   string = s.text
   
-print(string)
+# print(string)
 
-audio_config = speechsdk.audio.AudioOutputConfig(use_default_speaker=True)
+# audio_config = speechsdk.audio.AudioOutputConfig(use_default_speaker=True)
 
-synthesizer = speechsdk.SpeechSynthesizer(speech_config=speech_config, audio_config=audio_config)
-synthesizer.speak_text_async(string)
+# synthesizer = speechsdk.SpeechSynthesizer(speech_config=speech_config, audio_config=audio_config)
+# synthesizer.speak_text_async(string)
