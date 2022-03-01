@@ -21,7 +21,7 @@ for s in sel:
   string = s.text
 arr = string.split('\n')
 string = arr[2]
-print(string)
+
 @app.get('/')
 def create_item():
     return string
