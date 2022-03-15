@@ -7,6 +7,9 @@ speech_config = speechsdk.SpeechConfig(subscription="b751009eb5f545f8a4d0ce3cab8
 
 speech_config.speech_synthesis_language = "en-US"
 
+audio_config = speechsdk.audio.AudioOutputConfig(use_default_speaker=True)
+synthesizer = speechsdk.SpeechSynthesizer(speech_config=speech_config, audio_config=audio_config)
+
 url = "https://www.eslfast.com/kidsenglish/ke/ke{}{}{}.htm"
 
 a = random.choice('0')
@@ -26,4 +29,5 @@ for i in string:
         sentence +=i
     else:
         print(sentence)
+        synthesizer.speak_text_async(sentence)
         sentence = ""
