@@ -1,3 +1,4 @@
+import azure.cognitiveservices.speech as speechsdk
 from fastapi import FastAPI
 from typing import Optional
 from pydantic import BaseModel
@@ -21,6 +22,12 @@ for s in sel:
   string = s.text
 arr = string.split('\n')
 string = arr[2]
+
+speech_config = speechsdk.SpeechConfig(subscription="b751009eb5f545f8a4d0ce3cab8d7c71", region="eastasia")
+speech_config.speech_synthesis_language = "en-US"
+#輸出音檔
+audio_config = speechsdk.audio.AudioOutputConfig(filename="test.wav")
+synthesizer = speechsdk.SpeechSynthesizer(speech_config=speech_config, audio_config=audio_config)
 
 @app.get('/')
 def create_item():
